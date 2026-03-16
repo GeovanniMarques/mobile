@@ -93,7 +93,7 @@ npm install
 O Node.js lerá a "lista de dependências" e baixará tudo o que é necessário automaticamente para você.
 
 ## 🛠️ Solução de Problemas (Troubleshooting)
-Durante o desenvolvimento no SENAI, é comum encontrar alguns obstáculos técnicos. Aqui estão as soluções para os mais frequentes:
+Durante o desenvolvimento, é comum encontrar alguns obstáculos técnicos. Aqui estão as soluções para os mais frequentes:
 
 ### 1. O QR Code não carrega no celular (Erro de Rede)
 Este é o erro mais comum. Geralmente ocorre quando o computador e o celular não conseguem se "enxergar" na rede, quando não conseguem estabelecer uma conexão direta via IP local.
@@ -110,8 +110,6 @@ npx expo start --tunnel
 
 - **Por que usamos?**
 Em redes compartilhadas (como as do SENAI ou redes públicas), existem bloqueios de segurança (Firewalls) que impedem que dois dispositivos se comuniquem diretamente, mesmo estando no mesmo Wi-Fi. O túnel "pula" esse bloqueio, enviando os dados do seu código para um servidor externo que os repassa para o seu celular.
-
-
 
 <br>
 
@@ -136,3 +134,46 @@ Se o projeto começar a apresentar erros estranhos após a instalação de uma n
 1. Apague a pasta node_modules.
 2. Apague o arquivo package-lock.json.
 3. Execute npm install novamente.
+
+### 4. Projeto incompatível com a versão do Expo Go
+Este erro ocorre quando há um descompasso entre as ferramentas instaladas no seu projeto e o aplicativo instalado no seu celular.
+
+- **Sintoma**: Mensagem *"Project is incompatible with this version of Expo Go"* ou erro de **Java/SDK** no **Android**.
+
+- **Causa**: Falta da declaração da versão correta do SDK no arquivo de configuração ou bibliotecas com versões conflitantes.
+
+- **Solução**: 
+1. Verifique se o arquivo ``app.json`` contém a chave ``"sdkVersion": "52.0.0"`` *(ou a versão atual estável)* dentro do objeto **"expo"**;
+2. No terminal, execute o comando de sincronização:
+``bash npx expo install --fix``; 
+3. Esse comando ajustará automaticamente o React e o React Native para as versões que o seu Expo Go consegue "ler".
+
+### 5. O código roda na Web, mas trava no Celular
+- **Causa**: Uso de componentes HTML (como <div>, <span>, <h1>) em vez de componentes nativos do React Native.
+
+- **Solução**: Substitua tags HTML por componentes importados do react-native:
+
+    - <div> → <View>
+
+    - <span> ou <h1> → <Text>
+
+    - <img> → <Image>
+
+### Qual comando usar?
+A recomenadação é: **depende da situação**.
+
+1. **No dia a dia**: ``npm start`` (ou ``npx expo start``)
+Use este para a rotina normal. Ele é mais rápido porque aproveita o cache das execuções anteriores. Se você só mudou uma cor ou uma lógica de JavaScript, ele é o ideal.
+
+2. **Quando algo "estranho" acontecer**: ``npx expo start -c``
+O ``-c`` *(de clean)* limpa o cache. Use-o sempre que:
+
+- Instalar uma nova biblioteca.
+- Alterar arquivos de configuração como ``app.json`` ou ``package.json``.
+- O app estiver mostrando um erro que você já corrigiu no código, mas ele insiste em aparecer (o famoso "erro fantasma").
+
+**Veredito**: Não precisa usar o ``-c`` toda vez, pois ele torna a inicialização um pouco mais ***lenta***. Deixe-o como sua primeira ferramenta de diagnóstico quando as coisas não saírem como o esperado.
+
+## 🌐 Web vs. 📱 Mobile (React Native)
+Para quem vem do HTML/CSS, esta tabela ajuda a entender como estruturar o layout no celular:
+
